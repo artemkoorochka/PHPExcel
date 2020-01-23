@@ -15,12 +15,7 @@ require_once dirname(__FILE__) . '/../Classes/PHPExcel/IOFactory.php';
 $objPHPExcel = new PHPExcel();
 
 $arResult[] = date('H:i:s') . " Load from Excel2007 file";
-
-#$objReader = PHPExcel_IOFactory::createReader('Excel5');
-#$objReader = PHPExcel_IOFactory::createReader('Excel2003XML');
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
-
-
 $objPHPExcel = $objReader->load("data/lansichina/test3.xlsx");
 
 $arResult[] = date('H:i:s') . " Iterate worksheets by Row";
@@ -28,7 +23,11 @@ $arResult[] = date('H:i:s') . " Iterate worksheets by Row";
 foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
     $arResult[] = 'Worksheet - ' . $worksheet->getTitle();
 
+    foreach ($worksheet->getRowIterator() as $row) {
+        $arResult[] = '    Row number - ' . $row->getRowIndex();
 
+
+    }
 }
 
 d($arParams);
