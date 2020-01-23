@@ -26,7 +26,13 @@ foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
     foreach ($worksheet->getRowIterator() as $row) {
         $arResult[] = '    Row number - ' . $row->getRowIndex();
 
-
+        $cellIterator = $row->getCellIterator();
+        $cellIterator->setIterateOnlyExistingCells(false); // Loop all cells, even if it is not set
+        foreach ($cellIterator as $cell) {
+            if (!is_null($cell)) {
+                $arResult[] =  '        Cell - ' . $cell->getCoordinate() . ' - ' . $cell->getValue();
+            }
+        }
     }
 }
 
