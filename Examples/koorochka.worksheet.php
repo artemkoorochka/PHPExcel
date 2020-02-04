@@ -6,7 +6,7 @@ if (ini_get('mbstring.func_overload') & 2) {
 $arParams = array();
 $arResult = array();
 
-//require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
 /** Include PHPExcel */
 require_once dirname(__FILE__) . '/../Classes/PHPExcel.php';
@@ -14,13 +14,22 @@ require_once dirname(__FILE__) . '/../Classes/PHPExcel.php';
 
 
 $fileName = $_SERVER["DOCUMENT_ROOT"] . "/upload/excel/40b/40b446e24e0fa244d1ec3132a7b763b6.xls";
-
-$inputFileType = 'Excel5';
 $inputFileName = $fileName;
-$sheetnames = array('Data Sheet #1','Data Sheet #3');
-/** Create a new Reader of the type defined in $inputFileType **/
+$fileContent = "";
+
+//get inputFileType (most of time Excel5)
+$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+
+//initialize cache, so the phpExcel will not throw memory overflow
+$cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
+$cacheSettings = array(' memoryCacheSize ' => '8MB');
+PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
+//initialize object reader by file type
 $objReader = PHPExcel_IOFactory::createReader($inputFileType);
-/** Advise the Reader of which WorkSheets we want to load **/
-$objReader->setLoadSheetsOnly($sheetnames);
-/**  Load $inputFileName to a PHPExcel Object  **/
+
+//read only data (without formating) for memory and time performance
+$objReader->setReadDataOnly(true);
+
+//load file into PHPExcel object
 $objPHPExcel = $objReader->load($inputFileName);
