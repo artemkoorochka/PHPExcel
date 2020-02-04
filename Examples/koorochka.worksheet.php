@@ -17,10 +17,10 @@ $fileName = $_SERVER["DOCUMENT_ROOT"] . "/upload/excel/40b/40b446e24e0fa244d1ec3
 
 $inputFileType = 'Excel5';
 $inputFileName = $fileName;
-$sheetname = 'Data Sheet #2';
-/**  Create a new Reader of the type defined in $inputFileType  **/
+$sheetnames = array('Data Sheet #1','Data Sheet #3');
+/** Create a new Reader of the type defined in $inputFileType **/
 $objReader = PHPExcel_IOFactory::createReader($inputFileType);
-/**  Advise the Reader of which WorkSheets we want to load  **/
-$objReader->setLoadSheetsOnly($sheetname);
+/** Advise the Reader of which WorkSheets we want to load **/
+$objReader->setLoadSheetsOnly($sheetnames);
 /**  Load $inputFileName to a PHPExcel Object  **/
 $objPHPExcel = $objReader->load($inputFileName);
